@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import openai
 
 app = Flask(__name__)
@@ -19,8 +19,7 @@ def generate_response():
         stop=None,
         temperature=0.5,
     )
-    response_text = response["choices"][0]["text"]
-    return response_text
+    return jsonify({"response": response["choices"][0]["text"]})
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
