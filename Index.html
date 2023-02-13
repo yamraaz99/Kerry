@@ -10,13 +10,11 @@
       <h1 class="text-center my-5">Kerry the A.I.</h1>
       <div class="row justify-content-center">
         <div class="col-6">
-          <form>
-            <div class="form-group">
-              <label for="prompt">Enter your prompt:</label>
-              <input type="text" class="form-control" id="prompt">
-            </div>
-            <button class="btn btn-primary btn-block" id="submit-button">Submit</button>
-          </form>
+          <div class="form-group">
+            <label for="prompt">Enter your prompt:</label>
+            <input type="text" class="form-control" id="prompt">
+          </div>
+          <button class="btn btn-primary btn-block" id="submit-button">Submit</button>
         </div>
       </div>
       <div class="row justify-content-center my-5" id="response-container" style="display: none;">
@@ -40,14 +38,19 @@
         xhr.open("POST", "/prompt", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
-          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            const response = xhr.responseText;
-            document.getElementById("response").innerHTML = response;
-            document.getElementById("response-container").style.display = "block";
+          if (this.readyState === XMLHttpRequest.DONE) {
+            if (this.status === 200) {
+              const response = xhr.responseText;
+              document.getElementById("response").innerHTML = response;
+              document.getElementById("response-container").style.display = "block";
+            } else {
+              console.error("XHR error:", this.status);
+            }
           }
         };
         xhr.send(`prompt=${encodeURIComponent(prompt)}`);
       });
     </script>
+
   </body>
 </html>
